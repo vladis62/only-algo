@@ -1,26 +1,26 @@
-def solution(arr1, arr2):
+def solution(a, b):
     result = ''
-    max_arr = min(len(arr1), len(arr2))
-    sum_arr = ''
-    carry = 0
-    j = 0
-    for i in range(0, max_arr):
-        s = arr1[i] + arr2[i] + carry
-        if s > 9:
-            carry = 1
+    if len(a) > len(b):
+        b = '0' * (len(a) - len(b)) + b
+    if len(b) > len(a):
+        a = '0' * (len(b) - len(a)) + a
+    remainder = 0
+    for i in range(len(a) - 1, -1, -1):
+        res = int(a[i]) + int(b[i]) + remainder
+        if res > 9:
+            remainder = 1
         else:
-            carry = 0
-        sum_arr = str(s) + sum_arr
-        j = i
-    if carry:
-        sum_arr = str(s) + sum_arr
-    return result
+            remainder = 0
+        result = str(res % 10) + result
+    if remainder:
+        result = str(remainder) + result
+    return result.replace('', ' ').strip()
 
 
 def main():
     _ = input()
-    arr1 = list(map(int, input().split()))
-    arr2 = [int(digit) for digit in str(input())]
+    arr1 = input().replace(' ', '')
+    arr2 = input()
     result = solution(arr1, arr2)
     print(result)
 
