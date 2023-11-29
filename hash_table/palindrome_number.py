@@ -1,5 +1,5 @@
 class Solution:
-    def isPalindrome(self, x: int) -> bool:
+    def is_palindrome(self, x: int) -> bool:
         s = str(x)
         if len(s) == 1:
             return True
@@ -15,4 +15,4 @@ class Solution:
 
 if __name__ == '__main__':
     s = Solution()
-    print(s.isPalindrome(11))
+    print(s.is_palindrome(11))

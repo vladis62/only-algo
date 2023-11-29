@@ -1,2 +1,2 @@
-def longestCommonPrefix(self, strs):
+# def longestCommonPrefix(self, strs):
 
