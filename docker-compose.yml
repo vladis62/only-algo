@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  postgresql:
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    container_name: postgresql
+    image: "docker-proxy.artifactory.tcsbank.ru/postgres:14.4"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=bpm
+      - POSTGRES_PASSWORD=bpm
+      - POSTGRES_DB=bpm
+  redis:
+    container_name: redis
+    image: "docker-proxy.artifactory.tcsbank.ru/bitnami/redis:6.0.7"
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  redis-sentinel:
+    container_name: redis-sentinel
+    image: "docker-proxy.artifactory.tcsbank.ru/bitnami/redis-sentinel:6.0.7"
+    ports:
+      - "26379:26379"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_MASTER_HOST=redis
+
+#  wiremock:
+#    container_name: wiremock
+#    image: "docker-hosted.artifactory.tcsbank.ru/top-infra-products/mock-proxy-wiremock:${MOCK_PROXY_TAG}"
+#    hostname: wiremock
+#    ports:
+#      - "8082:8080"
+
+  mock-proxy-admin-back:
+    container_name: mock-proxy-admin-back
+    image: "docker-hosted.artifactory.tcsbank.ru/top-infra-products/mock-proxy-admin-back:latest"
+    depends_on:
+      - redis-sentinel
+      - postgresql
+    ports:
+      - "8090:8090"
+    env_file:
+      - service-envs.env
+    environment:
+      - datasources.postgres.jdbc-url=jdbc:postgresql://postgresql:5432/bpm
+      - spring.liquibase.default-schema=mock_proxy_custom_schema
+
+  mock-proxy:
+    container_name: mock-proxy
+    image: "docker-hosted.artifactory.tcsbank.ru/top-infra-products/mock-proxy:latest"
+    depends_on:
+      - redis-sentinel
+      - postgresql
+      - mock-proxy-admin-back
+    ports:
+      - "8080:8080"
+    env_file:
+      - service-envs.env
+    environment:
+      - datasources.postgres.jdbc-url=jdbc:postgresql://postgresql:5432/bpm
+      - spring.liquibase.default-schema=mock_proxy_custom_schema

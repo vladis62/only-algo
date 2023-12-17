@@ -1,6 +1,21 @@
 import time
 import sys
 
+def can_be_written(s1, s2):
+    iterator_s2 = iter(s2)
+
+    for char in s1:
+        if char not in iterator_s2:
+            return False
+
+    return True
+
+# Пример использования
+string1 = "b"
+string2 = "axbycz"
+result = can_be_written(string1, string2)
+print(result)
+
 # time_start = time.time()
 # i = 0
 # while i < 1000000000:
@@ -40,11 +55,39 @@ import sys
 #
 # print(get_least_primes_linear(10))
 
+#
+# print(sys.getsizeof(42))  # => 28 байт занимает короткое целое число
+# print(sys.getsizeof([]))  # => 56 байт занимает пустой массив
+# print(sys.getsizeof([42]))  # => 64 = (56 + 8) байт занимает массив с одним элементом.
+# print(sys.getsizeof([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))  # => 136 = (56 + 8*10) байт занимает массив
+#                                #          с десятью элементами.
+#                                # сами данные хранятся отдельно
+#                                # и добавляют 280 = (28 * 10) байт
+#
 
-print(sys.getsizeof(42))  # => 28 байт занимает короткое целое число
-print(sys.getsizeof([]))  # => 56 байт занимает пустой массив
-print(sys.getsizeof([42]))  # => 64 = (56 + 8) байт занимает массив с одним элементом.
-print(sys.getsizeof([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))  # => 136 = (56 + 8*10) байт занимает массив
-                               #          с десятью элементами.
-                               # сами данные хранятся отдельно
-                               # и добавляют 280 = (28 * 10) байт
+
+#
+# digit_lengths = [4, 4, 3, 3, 6, 4, 5, 4, 6, 6]  # длины слов «ноль», «один»,...
+#
+# l = lambda card: [-digit_lengths[card], -card]
+#
+# cards = [3, 2, 7]
+# print(sorted(cards, key=l))
+#
+#
+# def gen_bracer(n):
+#     left, right = n, n
+#     def generate_bracer(left, right, accum):
+#         if left == 0 and right == 0:
+#             print(accum)
+#             return
+#         if left > 0:
+#             generate_bracer(left - 1, right, accum + '(')
+#         if left < right:
+#             generate_bracer(left, right - 1, accum + ')')
+#
+#     generate_bracer(left, right, '')
+#
+#
+# gen_bracer(3)
+
