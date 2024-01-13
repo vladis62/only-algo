@@ -1,20 +1,8 @@
 import time
 import sys
 
-def can_be_written(s1, s2):
-    iterator_s2 = iter(s2)
+print(8 >> 2)
 
-    for char in s1:
-        if char not in iterator_s2:
-            return False
-
-    return True
-
-# Пример использования
-string1 = "b"
-string2 = "axbycz"
-result = can_be_written(string1, string2)
-print(result)
 
 # time_start = time.time()
 # i = 0
@@ -91,3 +79,4 @@ print(result)
 #
 # gen_bracer(3)
 
+# sys.stdin.readline().rstrip().split()
