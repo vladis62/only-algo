@@ -1,16 +1,16 @@
-# ID - 104816750
+# ID - 104922647
 # -- ПРИНЦИП РАБОТЫ --
 # Я реализовал поисковую систему, сначала построил индексы
 # по полученным индексам ищем вхождение документа
 # по полученным данным сделал сортировку и вывел первые 5 результатов
 # -- ВРЕМЕННАЯ СЛОЖНОСТЬ --
-# При индексации - O(N * K)
-# При расчете релевантности - O(M * P * N)
-# Получаем - O(N * K + M * P * N)
+# При индексации - O(n * k)
+# При расчете релевантности - O(m * p * n)
+# Получаем - O(n * k + m * p * n)
 # -- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
-# Уникальных слов из всех документов (индексы) = O(K)
-# Итоговый подсчет релевантных документов m = O(M)
-# Получаем - O(K + M)
+# Уникальных слов из всех документов (индексы) = O(k)
+# Итоговый подсчет релевантных документов m = O(m)
+# Получаем - O(k + m)
 def build_index(documents):
     index = {}
 
@@ -19,10 +19,7 @@ def build_index(documents):
 
         for word in text:
             if word in index:
-                if i in index[word]:
-                    index[word][i] += 1
-                else:
-                    index[word][i] = 1
+                index[word][i] = index[word].get(i, 0) + 1
             else:
                 index[word] = {i: 1}
 
@@ -39,10 +36,7 @@ def process_query(index, queries):
         for word in words:
             if word in index:
                 for value in index[word]:
-                    if value in query_result:
-                        query_result[value] += index[word][value]
-                    else:
-                        query_result[value] = index[word][value]
+                    query_result[value] = query_result.get(value, 0) + index[word][value]
         arr = sorted(query_result.items(), key=lambda x: (-x[1], x[0]))
         results.append([x[0] for x in arr[:5] if x[0] > 0])
 
