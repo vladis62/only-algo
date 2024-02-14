@@ -1,3 +1,17 @@
+# ID - 107195101
+
+# -- ПРИНЦИП РАБОТЫ --
+#  Ищем удаляемый элемент, если элемент не найден - возвращаем root
+#  Если у найденного элемента нет детей, то у родительского элемента присваиваем None (удаляем).
+#  Если найденный элемент является корнем дерева возвращаем None.
+#  Если у найденного элемента один ребенок то у родителя меняем элемент на ребенка.
+#  Если у найденного элемента двое детей, то ищем в левом ребенке самый правый узел и заменяем его на удаляемый элемент.
+#  Меняем значение удаляемого элемента на элемент найденного узла и присваиваем левую часть найденного правого узла.
+# -- ВРЕМЕННАЯ СЛОЖНОСТЬ --
+# O(h), h — высота дерева.
+# -- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
+# O(n), n - количество элементов.
+
 from typing import Optional
 import os
 
@@ -13,14 +27,11 @@ else:
     from node import Node
 
 
-def search_node(DNode, DParent, key):
-    while DNode and DNode.value != key:
-        DParent = DNode
-        if key >= DNode.value:
-            DNode = DNode.right
-        else:
-            DNode = DNode.left
-    return DNode, DParent
+def search_node(node, parent_node, key):
+    while node and node.value != key:
+        parent_node = node
+        node = node.right if key >= node.value else node.left
+    return node, parent_node
 
 
 def find_replace_right_node(node, parent_node):
@@ -32,7 +43,7 @@ def find_replace_right_node(node, parent_node):
 
 
 def remove(root, key) -> Optional[Node]:
-    node, parent_node = search_node(root, None, key)
+    node, parent_node = search_node(root, Node, key)
 
     if not node:
         return root
@@ -49,70 +60,24 @@ def remove(root, key) -> Optional[Node]:
         return root
 
     if node.left and node.right:
-        PParent = node
-        PNode, PParent = find_replace_right_node(node.left, PParent)
-        node.value = PNode.value
-        if PParent.left == PNode:
-            PParent.left = PNode.left
+        p_parent_node = node
+        p_node, p_parent_node = find_replace_right_node(node.left, p_parent_node)
+        node.value = p_node.value
+        if p_parent_node.left == p_node:
+            p_parent_node.left = p_node.left
         else:
-            PParent.right = PNode.left
+            p_parent_node.right = p_node.left
     else:
-        if node.left:
-            PNode = node.left
-        else:
-            PNode = node.right
+        p_node = node.left if node.left else node.right
         if node != root:
             if node == parent_node.left:
-                parent_node.left = PNode
+                parent_node.left = p_node
             else:
-                parent_node.right = PNode
+                parent_node.right = p_node
         else:
-            node = PNode
+            root = p_node
 
-    return node
-
-
-def remove(node, key):
-    DNode = node
-    DParent = None
-
-    DNode1, DParent = search_node(DNode, DParent, key)
-
-    if not DNode:
-        return node
-
-    if not DNode.left and not DNode.right:
-        if DNode == node:
-            return None
-        else:
-            if DParent.left == DNode:
-                DParent.left = None
-            else:
-                DParent.right = None
-        return node
-
-    if DNode.left and DNode.right:
-        PParent = DNode
-        PNode, PParent = find_replace_right_node(DNode.left, PParent)
-        DNode.value = PNode.value
-        if PParent.left == PNode:
-            PParent.left = PNode.left
-        else:
-            PParent.right = PNode.left
-    else:
-        if DNode.left:
-            PNode = DNode.left
-        else:
-            PNode = DNode.right
-        if DNode != node:
-            if DNode == DParent.left:
-                DParent.left = PNode
-            else:
-                DParent.right = PNode
-        else:
-            node = PNode
-
-    return node
+    return root
 
 
 def test():

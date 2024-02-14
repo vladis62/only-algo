@@ -10,20 +10,13 @@
 # -- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
 # O(n) - хранение кучи и конечного отсортированного массива
 
-def heap_sort():
-    n = int(input())
-    heap = [-1]
-
-    for i in range(n):
-        login, task, fine = input().split()
-        head_add(heap, [login, int(task), int(fine)])
-
+def heap_sort(heap):
     sorted_array = []
     while len(heap) > 1:
         max_val = pop_max(heap)
         sorted_array.append(max_val[0])
 
-    [print(arr) for arr in sorted_array]
+    return sorted_array
 
 
 def head_add(heap, e):
@@ -89,5 +82,16 @@ def sift_up(heap, idx) -> int:
     return idx
 
 
+def main():
+    n = int(input())
+    heap = [-1]
+
+    for i in range(n):
+        login, task, fine = input().split()
+        head_add(heap, [login, int(task), int(fine)])
+    sorted_array = heap_sort(heap)
+    [print(arr) for arr in sorted_array]
+
+
 if __name__ == '__main__':
-    heap_sort()
+    main()
