@@ -3,6 +3,8 @@ import sys
 
 print(8 >> 2)
 
+# https://github.com/fuodorov/yaalgorithms/blob/main/sprint_6/adjacency_list.py
+
 
 # time_start = time.time()
 # i = 0
