@@ -1,4 +1,6 @@
 # ID - 109058754
+import itertools
+
 
 # -- ПРИНЦИП РАБОТЫ --
 # Пользуемся двумерным массивом dp, где dp[i][j] представляет собой редакционное расстояние между префиксами строк s1[:j] и s2[:i]
@@ -48,12 +50,11 @@ if __name__ == '__main__':
 
 def levenshtein(s1, s2):
     m, n = len(s1), len(s2)
-    dp = [j for j in range(m)]
-    for i in range(1, n):
-        for j in range(m):
-            dist = i if j == 0 else min(dp[j - 1] + 1, dp[j] + 1, mem + int(s1[j] != s2[i]))
-            mem = dp[j]
-            dp[j] = dist
+    dp = list(range(m))
+    for i, j in itertools.product(range(1, n), range(m)):
+        dist = i if j == 0 else min(dp[j - 1] + 1, dp[j] + 1, mem + int(s1[j] != s2[i]))
+        mem = dp[j]
+        dp[j] = dist
     return dist
 
 

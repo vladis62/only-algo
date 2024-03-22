@@ -5,6 +5,8 @@ print(8 >> 2)
 
 # https://github.com/fuodorov/yaalgorithms/blob/main/sprint_6/adjacency_list.py
 
+# https://gist.github.com/powercoderlol/d2c197382f35b3c04b144290e474616c
+
 
 # time_start = time.time()
 # i = 0
@@ -82,3 +84,17 @@ print(8 >> 2)
 # gen_bracer(3)
 
 # sys.stdin.readline().rstrip().split()
+
+
+class Solution(object):
+    def reverseList(self, head):
+        node = head
+        result = None
+
+        while node:
+            current_node = node.next
+            node.next = result
+            result = node
+            node = current_node
+
+        return result
