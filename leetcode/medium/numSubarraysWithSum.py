@@ -8,6 +8,8 @@ class Solution(object):
             prefix_sum += num
             cnt += sum_count.get(prefix_sum - goal, 0)
             sum_count[prefix_sum] = sum_count.get(prefix_sum, 0) + 1
+            print(cnt)
+            print(sum_count)
 
         return cnt
 
